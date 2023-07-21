@@ -1,25 +1,30 @@
-import './CartItem.css';
 import { RiDeleteBin6Line } from "react-icons/ri";
-import img from '../../../assets/shoes/p2.png';
+import { Context } from '../../../Context/MyContext';
+import { useContext } from "react";
+import './CartItem.css';
 
-const CartItem = () => {
+
+const CartItem = ({ cartItem }) => {
+
+  const { removeFromCart } = useContext(Context);
+  
   return (
   <div className="cartItem">
      <div className="cartItem-image">
-        <img src={img} alt="cartItem"/>
+        <img src={cartItem.thumbnail} alt="cartItem"/>
      </div>
 
      <div className="cartItem-content">
        <div className="cartItem-div">
          <div className="cartItem-title">
-           Jordan Retro 6 G
+           {cartItem.title}
          </div>
          <div className="cartItem-subtitle">
-           MRP: RS 1200.00
+           MRP: RS {cartItem.price}
          </div>
        </div>
        <div>
-         Mens golf shoes
+        {cartItem.subtitle}
        </div>
 
        <div className="shoe-size-quantity">
@@ -27,12 +32,9 @@ const CartItem = () => {
            <div className="shoe-sizes">
              <div className="shoe-sizes-text"> Size: </div>
              <select>
-               <option value="1">UK 6</option>
-               <option value="2">UK 7</option>
-               <option value="3">UK 8</option>
-               <option value="4">UK 6.5</option>
-               <option value="5">UK 4</option>
-               <option value="6">UK 5</option>
+               {cartItem.sizes.data.map((item) => (
+                  <option value="1">{item.size}</option>
+               ))}
              </select>
            </div>
            <div className="shoe-quantity">
@@ -48,7 +50,7 @@ const CartItem = () => {
            </div>
          </div>
 
-         <div className="delete-icon" onClick={() => {}}>
+         <div className="delete-icon" onClick={() => removeFromCart(cartItem)}>
            <RiDeleteBin6Line size={20}/>
          </div>
 

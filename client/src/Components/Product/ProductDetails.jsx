@@ -9,13 +9,14 @@ import './ProductDetails.css';
 const ProductDetails = () => {
 
   const { id } = useParams();
-  const { fetchSingleProduct } = useContext(Context);
+  const { fetchSingleProduct, handleAddToCart } = useContext(Context);
   const [singleProduct, setSingleProduct] = useState({});
 
   async function getData() {
     let data = await fetchSingleProduct(id);
     setSingleProduct(data);
   }
+ 
 
   useEffect(() => {
     getData();
@@ -32,7 +33,7 @@ const ProductDetails = () => {
           <div className='right'>
 
             <div className='right-product-name'>
-             {singleProduct.title}
+              {singleProduct.title}
             </div>
             <div className='right-product-subtitle'>
               {singleProduct.subtitle}
@@ -64,39 +65,19 @@ const ProductDetails = () => {
 
 
               <div className='product-sizes-list'>
-                <div className='product-size'>
-                  UK 6
-                </div>
-                <div className='product-size'>
-                  UK 7
-                </div>
-                <div className='product-size'>
-                  UK 8
-                </div>
-                <div className='product-size'>
-                  UK 9
-                </div>
-                <div className='product-size'>
-                  UK 5
-                </div>
-                <div className='product-size'>
-                  UK 1
-                </div>
-                <div className='product-size'>
-                  UK 2
-                </div>
-                <div className='product-size'>
-                  UK 3
-                </div>
-                <div className='product-size'>
-                  UK 4
-                </div>
+                {singleProduct.sizes?.data.map((item) => (
+                  <div className='product-size'>
+                    {item.size}
+                  </div>
+                ))}
               </div>
 
             </div>
 
             <div className='buttons'>
-              <button className='addtocart-button'>
+              <button className='addtocart-button' onClick={() => {handleAddToCart(singleProduct),
+              console.log(singleProduct);
+              }}>
                 Add to Cart
               </button>
               <button className='addtowishlist-button'>
@@ -111,7 +92,7 @@ const ProductDetails = () => {
               </div>
               <br />
               <div className='product-description-paragraph'>
-                 {singleProduct.description}
+                {singleProduct.description}
               </div>
             </div>
 

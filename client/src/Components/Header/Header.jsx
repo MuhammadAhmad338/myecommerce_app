@@ -15,13 +15,13 @@ const Header = () => {
                 <img src={prod} alt="header-image" onClick={() => navigate("/")} />
             </div>
             <div className='header-title'>
-                <span><a href="/">Home</a></span>
-                <span><a href="/about">About</a></span>
-                <span><a href="/category">Categories</a></span>
+                <span onClick={() => navigate("/")}>Home</span>
+                <span onClick={() => navigate("/about")}>About</span>
+                <span onClick={() => navigate("/category")}>Category</span>
                 <select name="" id="">
                     <option value="1"></option>
                 </select>
-                <span><a href="/contact">Contact</a></span>
+                <span onClick={() => navigate("/contact")}>Contact</span>
             </div>
             <div className='header-cart'>
                 <MdOutlineFavoriteBorder />
