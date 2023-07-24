@@ -17,7 +17,6 @@ const ProductDetails = () => {
     setSingleProduct(data);
   }
  
-
   useEffect(() => {
     getData();
   }, []);

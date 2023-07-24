@@ -15,31 +15,55 @@ const getSingleProduct = async (req, res) => {
     try {
         const _id = req.params.id;
         const product = await Product.findById(_id);
-        res.status(200).json(product); 
-    } catch(error) {
+        res.status(200).json(product);
+    } catch (error) {
         res.status(500).json('Some error occured!');
     }
 }
 
-const addProducts = async (req, res) => {
+const addProduct = async (req, res) => {
     try {
-        const { title, subtitle, price, original_price, description } = req.body;
-        let images = await uploadImages();
-        let thumbnail = await uploadImage();
-        const product = new Product({ title, subtitle, price, original_price, description, sizes, images, thumbnail, sizes});
-        product.save();
+        const imagesArray = [];
+        const data = req.body;
+        const image = await uploadImage(data.thumbnail);
+        const images = await uploadImages(data.images);
+        for (let i = 0; i < images.length; i++) {
+            imagesArray.push(images[i]);
+        }
+        const product = Product({ ...data, sizes, thumbnail: image, images: imagesArray });
+        await product.save();
         res.status(200).json(product);
     } catch (error) {
         res.status(500).json(error);
     }
 }
 
-const productData = async (req, res) => {
+const deleteProduct = async (req, res) => {
     try {
-
+        const _id = req.params.id;
+        const deletedProduct = await Product.findByIdAndDelete(_id);
+        res.status(200).json(`Product Deleted Successfully ${deletedProduct}`);
     } catch (error) {
-        res.status(500).json('Some Error Occured');
+        res.status(500).json(error);
     }
 }
 
-module.exports = { getAllProducts, addProducts, getSingleProduct }
+const searchProduct = async (req, res) => {
+    try {
+        const query = req.query.title;
+        const searchProduct = await Product.aggregate([{
+            $match:
+            {
+                $or: [
+                    { title: { $regex: query, $options: "i" } },
+                ]
+            }
+        }]);
+        res.status(200).json(searchProduct);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+}
+
+
+module.exports = { getAllProducts, addProduct, getSingleProduct, searchProduct, deleteProduct }

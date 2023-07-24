@@ -9,26 +9,21 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-const uploadImage = async (req, res) => {
+const uploadImage = async (imageUrl) => {
     try {
-        let image = "./assets/Images/p8 Air Jordan 1 Retro High OG/thumbnail.webp";
+        let image = `${imageUrl}`;
+        console.log(`Image ${image}`)
         let result = await cloudinary.uploader.upload(image);
         let thumbnail = result.secure_url;
         return thumbnail;
     } catch (error) {
-        res.status(500).json(error);
+        console.log(error);
     }
 }
 
-const uploadImages = async (req, res) => {
+const uploadImages = async (images) => {
     try {
         let uploadedImages = [];
-        const images = [
-            "./assets/Images/p8 Air Jordan 1 Retro High OG/09c9186d-e28e-4e46-9535-e49f09ddfdd9.webp",
-            "./assets/Images/p8 Air Jordan 1 Retro High OG/a5eaef87-810b-4ceb-9d26-bbcfdb7894d6.webp",
-            "./assets/Images/p8 Air Jordan 1 Retro High OG/air-jordan-1-retro-high-og-shoes-Pz6fZ9.jpeg",
-            "./assets/Images/p8 Air Jordan 1 Retro High OG/b7d9e1fb-6119-4345-8efe-747dd6bffa6a.webp",
-        ];
         for (let i = 0; i < images.length; i++) {
             let result = await cloudinary.uploader.upload(images[i]);
             uploadedImages.push(result);
